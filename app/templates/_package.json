@@ -1,11 +1,11 @@
 {
-  "name": "angular-<%= name %>",
+  "name": "<%= props.name %>",
   "version": "<%= props.version %>",
-  "description": "<%= props.name %>",
+  "description": "<%= props.description %>",
   "keywords": [
     "angular"
   ],
-  "homepage": "<%= github.html_url %>/<%= name %>",
+<% if(github) { %>  "homepage": "<%= github.html_url %>/<%= name %>",
   "bugs": "<%= github.html_url %>/<%= name %>/issues",
   "author": {
     "name": "<%= github.name %>",
@@ -15,26 +15,36 @@
   "repository": {
     "type": "git",
     "url": "<%= github.html_url %>/<%= name %>.git"
-  },
-  "licenses": [
+  },<% } %>
+<% if (props.license) { %>  "licenses": [
     {
       "type": "<%= props.license %>"
     }
-  ],
+  ],<% } %>
+  "dependencies": {},
   "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-contrib-jshint": "~0.3.0",
+    "grunt": "~0.4.2",
+    "grunt-angular-templates": "~0.5.1",
+    "grunt-autoprefixer": "~0.6.5",
+    "grunt-bower-install": "~0.8.0",
+    "grunt-concurrent": "~0.4.3",
+    "grunt-contrib-clean": "~0.5.0",
     "grunt-contrib-concat": "~0.3.0",
-    "grunt-contrib-uglify": "~0.2.2",
-    "grunt-contrib-watch": "~0.4.4",
-    "grunt-contrib-clean": "~0.4.1",
-    "grunt-contrib-connect": "~0.3.0",
-    "grunt-contrib-less": "~0.6.1",
-    "connect-livereload": "~0.2.0",
-    "grunt-open": "~0.2.0",
-    "grunt-karma": "~0.4.5",
+    "grunt-contrib-connect": "~0.6.0",
+    "grunt-contrib-copy": "~0.5.0",
+    "grunt-contrib-cssmin": "~0.7.0",
+    "grunt-contrib-htmlmin": "~0.2.0",
+    "grunt-contrib-jshint": "~0.8.0",
+    "grunt-contrib-less": "~0.9.0",
+    "grunt-contrib-uglify": "~0.3.2",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-karma": "~0.6.2",
+    "grunt-newer": "~0.6.1",
+    "grunt-nginclude": "~0.3.1",
     "grunt-ngmin": "0.0.3",
-    "grunt-bump": "~0.0.10",
-    "matchdep": "~0.1.2"
+    "grunt-rev": "~0.1.0",
+    "grunt-usemin": "~2.0.2",
+    "jshint-stylish": "~0.1.5",
+    "load-grunt-tasks": "~0.3.0"
   }
 }

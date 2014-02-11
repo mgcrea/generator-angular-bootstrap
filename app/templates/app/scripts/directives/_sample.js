@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('<%= props.githubUser %>.<%= _.camelize(props.name) %>', [])
+angular.module('<%= props.ghUser ? props.ghUser + '.' : '' %><%= props.title %>')
 
-  .directive('myDirective', function() {
+  .directive('ngHelloWorld', function() {
 
     return {
       restrict: 'EAC',

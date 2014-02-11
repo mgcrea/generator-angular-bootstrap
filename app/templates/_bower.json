@@ -1,11 +1,29 @@
 {
-  "name": "angular-<%= name %>",
+  "name": "<%= props.name %>",
   "version": "<%= props.version %>",
-  "dependencies": {
+  "description": "<%= props.description %>",
+  "keywords": [
+    "angular"
+  ],
+<% if(github) { %>  "homepage": "<%= github.html_url %>/<%= name %>",
+  "bugs": "<%= github.html_url %>/<%= name %>/issues",
+  "author": {
+    "name": "<%= github.name %>",
+    "email": "<%= github.email %>",
+    "url": "<%= github.html_url %>"
   },
-  "devDependencies": {
-    "angular<%= props.angularUnstable ? '-unstable' : '' %>": "latest",
-    "angular-mocks": "latest",
-    "jquery": "latest"
+  "repository": {
+    "type": "git",
+    "url": "<%= github.html_url %>/<%= name %>.git"
+  },<% } %>
+<% if (props.license) { %>  "licenses": [
+    {
+      "type": "<%= props.license %>"
+    }
+  ],<% } %>
+  "dependencies": {<% props.components.forEach(function(component) { %>
+    "<%= component.split('#')[0] %>": "<%= component.split('#')[1] %>",<% }); %><% props.ngModules.forEach(function(module) { %>
+    "angular-<%= module %>": "<%= props.ngVersion %>",<% }); %>
+    "angular": "<%= props.ngVersion %>"
   }
 }

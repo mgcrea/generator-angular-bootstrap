@@ -1,0 +1,76 @@
+<!doctype html>
+<!--[if lt IE 9]> <html class="no-js lt-ie9" lang="<%= props.locale %>" ng-app="<%= props.githubUser %>.<%= props.title %>"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="<%= props.locale %>" ng-app="<%= props.ghUser ? props.ghUser + '.' : '' %><%= props.title %>"> <!--<![endif]-->
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title><%= props.title %> - <%= props.description %></title>
+  <meta name="description" content="<%= props.description %>">
+
+<% if(props.supportLegacy) { %><!--[if lt IE 9]>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/2.2.0/es5-shim.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script>
+<![endif]--><% } %>
+
+  <!-- Sets initial viewport load and disables zooming  -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <!-- Makes your prototype chrome-less once bookmarked to your phone's home screen -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <!-- Set a shorter title for iOS6 devices when saved to home screen -->
+  <meta name="apple-mobile-web-app-title" content="<%= props.title %>">
+
+  <!-- Properties for Google+ snippets -->
+  <meta property="og:title" content="<%= props.title %>">
+  <meta property="og:description" content="<%= props.description %>">
+  <meta property="og:image" content="https://github.global.ssl.fastly.net/images/modules/logos_page/Octocat.png">
+
+  <!-- Author of this application -->
+<% if(github) { %>  <link rel="author" href="<%= github.html_url %>"> <% } %>
+  <link rel="icon" href="http://angularjs.org/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://angularjs.org/favicon.ico" type="image/x-icon">
+
+  <!-- build:css styles/components.min.css -->
+  <!-- bower:css -->
+  <!-- endbower -->
+  <!-- endbuild -->
+
+  <!-- build:css(.tmp) styles/main.min.css -->
+  <link rel="stylesheet" href="styles/main.css">
+  <!-- endbuild -->
+
+</head>
+
+<body ontouchstart ng-controller="MainCtrl">
+
+  <div class="site-wrapper">
+    <div class="site-wrapper-inner">
+      <div class="cover-container">
+        <div class="masthead clearfix">
+          <div class="inner" ng-include="'views/partials/header.html'"></div>
+        </div>
+        <div class="inner cover">
+<% if(props.ngModules.indexOf('route') !== -1) { %>          <div class="inner" ng-view></div><% } else { %>          <div class="inner" ng-include="'views/home.html'"></div><% } %>
+        </div>
+        <div class="mastfoot">
+          <div class="inner" ng-include="'views/partials/footer.html'"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- build:js scripts/components.min.js -->
+  <!-- bower:js -->
+  <!-- endbower -->
+  <% if(props.locale !== 'en') { %><script src="bower_components/angular-i18n/angular-locale_<%= props.locale %>.js"></script><% } %>
+  <!-- endbuild -->
+
+  <!-- build:js scripts/app.min.js -->
+  <script src="scripts/app.js"></script>
+  <script src="scripts/controllers/main.js"></script>
+  <!-- endbuild -->
+
+</body>
+
+</html>
