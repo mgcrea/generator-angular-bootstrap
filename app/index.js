@@ -218,7 +218,11 @@ Generator.prototype.app = function app() {
 
   // Styles
   this.mkdir('app/styles');
-  this.copy('app/styles/_main.css', 'app/styles/main.css');
+  if(this.props.cssPreprocessor === 'less') {
+    this.copy('app/styles/_main.less', 'app/styles/main.less');
+  } else {
+    this.copy('app/styles/_main.css', 'app/styles/main.css');
+  }
 
   // Views
   this.mkdir('app/views');

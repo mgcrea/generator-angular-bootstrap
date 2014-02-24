@@ -37,24 +37,24 @@ module.exports = function(grunt) {
 
     // Watches files for changes and runs tasks based on the changed files
     watch: {<% if (props.jsPreprocessor === 'coffee') { %>
-      coffee: {
-        files: ['<%%= yo.app %>/scripts/{,*/}*.{coffee,litcoffee,coffee.md}'],
-        tasks: ['newer:coffee:dist']
-      },
+      // coffee: {
+      //   files: ['<%%= yo.app %>/scripts/{,*/}*.{coffee,litcoffee,coffee.md}'],
+      //   tasks: ['newer:coffee:dist']
+      // },
       coffeeTest: {
         files: ['test/spec/{,*/}*.{coffee,litcoffee,coffee.md}'],
         tasks: ['newer:coffee:test', 'karma']
       },<% } else { %>
-      js: {
-        files: ['<%%= yo.app %>/scripts/{,*/}*.js'],
-        tasks: ['newer:jshint:all']
-      },
+      // js: {
+      //   files: ['<%%= yo.app %>/scripts/{,*/}*.js'],
+      //   tasks: ['newer:jshint:all']
+      // },
       jsTest: {
         files: ['test/spec/{,*/}*.js'],
         tasks: ['newer:jshint:test', 'karma']
       },<% } %><% if (props.cssPreprocessor === 'less') { %>
       less: {
-        files: ['<%%= yo.app %>/styles/{,*/}*.{less}'],
+        files: ['<%%= yo.app %>/styles/{,*/}*.less'],
         tasks: ['less:dev', 'autoprefixer']
       },<% } else if (props.cssPreprocessor === 'compass') { %>
       compass: {
@@ -73,7 +73,8 @@ module.exports = function(grunt) {
           livereload: '<%%= connect.options.livereload %>'
         },
         files: [
-          '<%%= yo.app %>/{,*/}*.html',
+          '<%%= yo.app %>/*.html',
+          '<%%= yo.app %>/views/{,*/}*.html',
           '.tmp/styles/{,*/}*.css',<% if (props.jsPreprocessor === 'coffee') { %>
           '.tmp/scripts/{,*/}*.js',<% } %>
           '<%%= yo.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
@@ -201,6 +202,11 @@ module.exports = function(grunt) {
 <% if (props.cssPreprocessor === 'less') { %>    // Compiles Less to CSS and generates necessary files if requested
     less: {
       options: {
+      },
+      dist: {
+        options: {
+          dumpLineNumbers: false
+        },
         files: [{
           expand: true,
           cwd: '<%%= yo.app %>/styles',
@@ -209,15 +215,17 @@ module.exports = function(grunt) {
           ext: '.css'
         }]
       },
-      dist: {
-        options: {
-          dumpLineNumbers: false
-        }
-      },
       dev: {
         options: {
           dumpLineNumbers: 'comments'
-        }
+        },
+        files: [{
+          expand: true,
+          cwd: '<%%= yo.app %>/styles',
+          src: '*.less',
+          dest: '.tmp/styles',
+          ext: '.css'
+        }]
       }
     },<% } else if (props.cssPreprocessor === 'compass') { %>    // Compiles Sass to CSS and generates necessary files if requested
     compass: {
