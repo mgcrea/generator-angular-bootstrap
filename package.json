@@ -22,13 +22,13 @@
     "test": "mocha"
   },
   "dependencies": {
-    "yeoman-generator": "~0.14.0",
-    "bluebird": "~1.0.2",
-    "github": "~0.1.13",
+    "yeoman-generator": "~0.16.0",
+    "bluebird": "~1.0.7",
+    "github": "~0.1.14",
     "semver": "~2.2.1"
   },
   "devDependencies": {
-    "mocha": "~1.14.0"
+    "mocha": "~1.17.1"
   },
   "peerDependencies": {
     "yo": ">=1.0.0"
