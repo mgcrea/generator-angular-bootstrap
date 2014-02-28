@@ -165,14 +165,13 @@ module.exports = function(grunt) {
     },
 
     // Automatically inject Bower components into the app
-    'bower-install': {
+    bowerInstall: {
       app: {
         src: '<%%= yo.app %>/index.html',
         ignorePath: '<%%= yo.app %>/',
         exclude: ['bower_components/jquery/jquery.js', 'bower_components/bootstrap/dist/js/bootstrap.js']
       }
     },
-
 <% if (props.jsPreprocessor === 'coffee') { %>    // Compiles CoffeeScript to JavaScript
     coffee: {
       options: {
@@ -198,7 +197,6 @@ module.exports = function(grunt) {
         }]
       }
     },<% } %>
-
 <% if (props.cssPreprocessor === 'less') { %>    // Compiles Less to CSS and generates necessary files if requested
     less: {
       options: {
@@ -440,7 +438,7 @@ module.exports = function(grunt) {
 
     grunt.task.run([
       'clean:server',
-      'bower-install',
+      'bowerInstall',
       'concurrent:server',
       'autoprefixer',
       'connect:livereload',
@@ -463,7 +461,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
-    'bower-install',
+    'bowerInstall',
     'useminPrepare',
     'concurrent:dist',
     'autoprefixer',
