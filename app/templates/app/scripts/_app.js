@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('<%= props.ghUser ? props.ghUser + '.' : '' %><%= props.title %>', [<%= props.modules.length ? '\'' + props.modules.join('\', \'') + '\'' : '' %>])
+angular.module('<%= props.ghUser ? props.ghUser + '.' : '' %><%= props.title %>', [<%= props.appModules.length ? '\'' + props.appModules.join('\', \'') + '\'' : '' %>])
 
   .constant('version', 'v<%= props.version %>')
 <% if(props.ngModules.indexOf('route') !== -1) { %>

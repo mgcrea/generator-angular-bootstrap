@@ -157,13 +157,16 @@ Generator.prototype.askFor = function askFor() {
     console.log(props);
 
     // Modules
-    props.modules = this._.clone(props.ngModules)
+    props.appModules = this._.clone(props.ngModules)
+    .filter(function(name) {
+      return name !== 'i18n';
+    })
     .map(this._.classify)
     .map(function(name) {
       return 'ng' + name;
     });
     if(props.components.indexOf('angular-strap:~2.0.0')) {
-      props.modules.push('mgcrea.ngStrap');
+      props.appModules.push('mgcrea.ngStrap');
     }
 
     done();
