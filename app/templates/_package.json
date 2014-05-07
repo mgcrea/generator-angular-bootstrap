@@ -5,16 +5,16 @@
   "keywords": [
     "angular"
   ],
-<% if(github) { %>  "homepage": "<%= github.html_url %>/<%= name %>",
-  "bugs": "<%= github.html_url %>/<%= name %>/issues",
+<% if(props.github) { %>  "homepage": "<%= props.github.html_url %>/<%= props.dashName %>",
+  "bugs": "<%= props.github.html_url %>/<%= props.dashName %>/issues",
   "author": {
-    "name": "<%= github.name %>",
-    "email": "<%= github.email %>",
-    "url": "<%= github.html_url %>"
+    "name": "<%= props.github.name %>",
+    "email": "<%= props.github.email %>",
+    "url": "<%= props.github.html_url %>"
   },
   "repository": {
     "type": "git",
-    "url": "<%= github.html_url %>/<%= name %>.git"
+    "url": "<%= props.github.html_url %>/<%= props.dashName %>.git"
   },<% } %>
 <% if (props.license) { %>  "licenses": [
     {
@@ -23,28 +23,49 @@
   ],<% } %>
   "dependencies": {},
   "devDependencies": {
-    "grunt": "~0.4.2",
-    "grunt-angular-templates": "~0.5.3",
-    "grunt-autoprefixer": "~0.7.2",
-    "grunt-bower-install": "~1.0.0",
-    "grunt-concurrent": "~0.4.3",
-    "grunt-contrib-clean": "~0.5.0",
-    "grunt-contrib-concat": "~0.3.0",
-    "grunt-contrib-connect": "~0.7.0",
-    "grunt-contrib-copy": "~0.5.0",
-    "grunt-contrib-cssmin": "~0.8.0",
-    "grunt-contrib-htmlmin": "~0.2.0",
-    "grunt-contrib-jshint": "~0.8.0",
-    "grunt-contrib-less": "~0.9.0",
-    "grunt-contrib-uglify": "~0.3.2",
-    "grunt-contrib-watch": "~0.5.3",
-    "grunt-karma": "~0.6.2",
-    "grunt-newer": "~0.6.1",
-    "grunt-nginclude": "~0.3.1",
+<% if (props.buildSystem === 'gulp') { %>    "gulp": "^3.6.2",
+    "gulp-autoprefixer": "0.0.7",
+    "gulp-changed": "^0.3.0",
+    "gulp-clean": "^0.2.4",
+    "gulp-cleancss": "^0.2.1",
+    "gulp-concat-util": "^0.2.2",
+    "gulp-connect": "^2.0.5",
+    "gulp-htmlmin": "^0.1.2",
+    "gulp-jshint": "^1.5.5",
+    "gulp-less": "^1.2.3",
+    "gulp-nginclude": "^0.4.3",
+    "gulp-ngmin": "^0.3.0",
+    "gulp-ngtemplate": "^0.2.1",
+    "gulp-open": "^0.2.8",
+    "gulp-rename": "^1.2.0",
+    "gulp-uglify": "^0.2.1",
+    "gulp-usemin": "^0.3.3",
+    "gulp-util": "^2.2.14",
+    "gulp-watch": "^0.6.4",
+    "jshint-stylish": "^0.2.0",
+    "through2": "^0.4.1",
+    "wiredep": "^1.4.4"<% } else if (props.buildSystem === 'grunt') { %>    "grunt": "^0.4.4",
+    "grunt-angular-templates": "^0.5.4",
+    "grunt-autoprefixer": "^0.7.3",
+    "grunt-bower-install": "^1.4.1",
+    "grunt-concurrent": "^0.5.0",
+    "grunt-contrib-clean": "^0.5.0",
+    "grunt-contrib-concat": "^0.4.0",
+    "grunt-contrib-connect": "^0.7.1",
+    "grunt-contrib-copy": "^0.5.0",
+    "grunt-contrib-cssmin": "^0.9.0",
+    "grunt-contrib-htmlmin": "^0.3.0",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-less": "^0.11.0",
+    "grunt-contrib-uglify": "^0.4.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-karma": "^0.8.3",
+    "grunt-newer": "^0.7.0",
+    "grunt-nginclude": "^0.4.1",
     "grunt-ngmin": "0.0.3",
-    "grunt-rev": "~0.1.0",
-    "grunt-usemin": "~2.0.2",
-    "jshint-stylish": "~0.1.5",
-    "load-grunt-tasks": "~0.4.0"
+    "grunt-rev": "^0.1.0",
+    "grunt-usemin": "^2.1.1",
+    "jshint-stylish": "^0.2.0",
+    "load-grunt-tasks": "^0.4.0"<% } %>
   }
 }

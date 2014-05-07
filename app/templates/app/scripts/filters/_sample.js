@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('<%= props.ghUser ? props.ghUser + '.' : '' %><%= props.title %>')
+angular.module('<%= props.moduleName %>')
 
   .filter('time', function() {
     return function(obj) {

@@ -1,6 +1,6 @@
 <!doctype html>
-<!--[if lt IE 9]> <html class="no-js lt-ie9" lang="<%= props.locale %>" ng-app="<%= props.ghUser ? props.ghUser + '.' : '' %><%= props.title %>"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="<%= props.locale %>" ng-app="<%= props.ghUser ? props.ghUser + '.' : '' %><%= props.title %>"> <!--<![endif]-->
+<!--[if lt IE 9]> <html class="no-js lt-ie9" lang="<%= props.locale %>" ng-app="<%= props.user ? props.user + '.' : '' %><%= props.title %>"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="<%= props.locale %>" ng-app="<%= props.user ? props.user + '.' : '' %><%= props.title %>"> <!--<![endif]-->
 <head>
 
   <meta charset="utf-8">
@@ -27,7 +27,7 @@
   <meta property="og:image" content="https://github.global.ssl.fastly.net/images/modules/logos_page/Octocat.png">
 
   <!-- Author of this application -->
-<% if(github) { %>  <link rel="author" href="<%= github.html_url %>"> <% } %>
+<% if(props.github) { %>  <link rel="author" href="<%= props.github.html_url %>"> <% } %>
   <link rel="icon" href="http://angularjs.org/favicon.ico" type="image/x-icon">
   <link rel="shortcut icon" href="http://angularjs.org/favicon.ico" type="image/x-icon">
 

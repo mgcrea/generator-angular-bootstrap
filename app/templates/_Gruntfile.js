@@ -75,8 +75,8 @@ module.exports = function(grunt) {
         files: [
           '<%%= yo.app %>/*.html',
           '<%%= yo.app %>/views/{,*/}*.html',
-          '.tmp/styles/{,*/}*.css',<% if (props.jsPreprocessor === 'coffee') { %>
-          '.tmp/scripts/{,*/}*.js',<% } %>
+          '.tmp/styles/{,*/}*.css',
+          '.tmp/scripts/{,*/}*.js',
           '<%%= yo.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
       }

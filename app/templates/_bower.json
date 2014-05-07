@@ -5,16 +5,16 @@
   "keywords": [
     "angular"
   ],
-<% if(github) { %>  "homepage": "<%= github.html_url %>/<%= name %>",
-  "bugs": "<%= github.html_url %>/<%= name %>/issues",
+<% if(props.github) { %>  "homepage": "<%= props.github.html_url %>/<%= props.dashName %>",
+  "bugs": "<%= props.github.html_url %>/<%= props.dashName %>/issues",
   "author": {
-    "name": "<%= github.name %>",
-    "email": "<%= github.email %>",
-    "url": "<%= github.html_url %>"
+    "name": "<%= props.github.name %>",
+    "email": "<%= props.github.email %>",
+    "url": "<%= props.github.html_url %>"
   },
   "repository": {
     "type": "git",
-    "url": "<%= github.html_url %>/<%= name %>.git"
+    "url": "<%= props.github.html_url %>/<%= props.dashName %>.git"
   },<% } %>
 <% if (props.license) { %>  "licenses": [
     {
@@ -22,8 +22,8 @@
     }
   ],<% } %>
   "dependencies": {<% props.components.forEach(function(component) { %>
-    "<%= component.split('#')[0] %>": "<%= component.split('#')[1] %>",<% }); %><% props.ngModules.forEach(function(module) { %>
-    "angular-<%= module %>": "<%= props.ngVersion %>",<% }); %>
-    "angular": "<%= props.ngVersion %>"
+    "<%= component.split('/')[1] %>": "<%= components[component] %>",<% }); %><% props.ngModules.forEach(function(module) { %>
+    "angular-<%= module %>": "^<%= props.ngVersion %>",<% }); %>
+    "angular": "^<%= props.ngVersion %>"
   }
 }
