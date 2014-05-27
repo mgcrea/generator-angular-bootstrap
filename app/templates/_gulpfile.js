@@ -3,6 +3,7 @@
 
 var gulp = require('gulp');
 var path = require('path');
+var util = require('util');
 var gutil = require('gulp-util');
 var changed = require('gulp-changed');
 var rename = require('gulp-rename');
@@ -11,11 +12,13 @@ var pkg = require('./package.json');
 var paths = {
   src: 'app',
   dist: 'dist',
-  scripts: '*/*.js',
-  templates: '{,*/}*.tpl.html',
+  tmp: '.tmp',
+  scripts: 'scripts/**/*.js',
+  index: 'index.html',
   views: 'views/**/*.html',
   images: 'images/{,*/}*.{jpg,png,svg}',
-  styles: 'styles/*.less',
+  styles: 'styles/{,*/}*.less',
+  fonts: 'fonts/{,*/}*.woff',
   data: 'data/{,*/}*.json'
 };
 
@@ -32,7 +35,7 @@ var banner = gutil.template('/**\n' +
 //
 var clean = require('gulp-clean');
 gulp.task('clean:tmp', function() {
-  return gulp.src(['.tmp/*'], {read: false})
+  return gulp.src([paths.tmp + '/*'], {read: false})
     .pipe(clean());
 });
 gulp.task('clean:test', function() {
@@ -40,7 +43,7 @@ gulp.task('clean:test', function() {
     .pipe(clean());
 });
 gulp.task('clean:dist', function() {
-  return gulp.src(['.tmp/*', paths.dist + '/*'], {read: false})
+  return gulp.src([paths.tmp + '/*', paths.dist + '/*'], {read: false})
     .pipe(clean());
 });
 
@@ -63,11 +66,11 @@ gulp.task('connect:dist', function() {
 });
 var chrome = require('gulp-open');
 gulp.task('open:src', function(){
-  gulp.src(paths.src + '/index.html')
+  gulp.src(paths.index, {cwd: paths.src})
   .pipe(chrome('', {url: 'http://localhost:' + 9000}));
 });
 gulp.task('open:dist', function(){
-  gulp.src(paths.dist + '/index.html')
+  gulp.src(paths.index, {cwd: paths.src})
   .pipe(chrome('', {url: 'http://localhost:' + 8080}));
 });
 
@@ -76,18 +79,16 @@ gulp.task('open:dist', function(){
 //
 var watch = require('gulp-watch');
 gulp.task('watch:src', function() {
-
   gulp.src(paths.scripts, {cwd: paths.src})
     .pipe(watch(function(files) {
       return files.pipe(connect.reload());
     }));
   gulp.src(paths.styles, {cwd: paths.src})
     .pipe(watch({}, ['styles:src']));
-  gulp.src(paths.views, {cwd: paths.src})
+  gulp.src([paths.index, paths.views], {cwd: paths.src})
     .pipe(watch(function(files) {
       return files.pipe(connect.reload());
     }));
-
 });
 
 
@@ -97,7 +98,6 @@ var uglify = require('gulp-uglify');
 var ngmin = require('gulp-ngmin');
 var concat = require('gulp-concat-util');
 gulp.task('scripts:dist', function() {
-
   gulp.src(paths.scripts, {cwd: paths.src})
     .pipe(ngmin())
     .pipe(concat(pkg.name + '.js', {process: function(src) { return '// Source: ' + path.basename(this.path) + '\n' + (src.trim() + '\n').replace(/(^|\n)[ \t]*('use strict'|"use strict");?\s*/g, '$1'); }}))
@@ -109,7 +109,6 @@ gulp.task('scripts:dist', function() {
     .pipe(uglify({outSourceMap: true}))
     .pipe(concat.header(banner))
     .pipe(gulp.dest(paths.dist));
-
 });
 
 
@@ -117,19 +116,25 @@ gulp.task('scripts:dist', function() {
 //
 var less = require('gulp-less');
 var prefix = require('gulp-autoprefixer');
+var combine = require('stream-combiner');
+var chalk = require('chalk');
 gulp.task('styles:src', function() {
-  return gulp.src(paths.styles, {cwd: paths.src})
-    .pipe(changed('.tmp/styles'))
-    .pipe(less())
+  var safeLess = combine(less());
+  safeLess.on('error', function(err) {
+    gutil.log(chalk.red(util.format('Plugin error: %s', err.message)));
+  });
+  return gulp.src(paths.styles, {cwd: paths.src, base: paths.src})
+    .pipe(changed(paths.tmp))
+    .pipe(safeLess)
     .pipe(prefix('last 1 version'))
-    .pipe(gulp.dest('.tmp/styles'))
+    .pipe(gulp.dest(paths.tmp))
     .pipe(connect.reload());
 });
 gulp.task('styles:dist', function() {
-  return gulp.src(paths.styles, {cwd: paths.src})
+  return gulp.src(paths.styles, {cwd: paths.src, base: paths.src})
     .pipe(less())
     .pipe(prefix('last 1 version', '> 1%', 'ie 8'))
-    .pipe(gulp.dest('.tmp/styles'));
+    .pipe(gulp.dest(paths.tmp));
 });
 
 
@@ -141,23 +146,25 @@ var nginclude = require('gulp-nginclude');
 var cleancss = require('gulp-cleancss');
 var wiredep = require('wiredep').stream;
 var through2 = require('through2');
+var fs = require('fs');
 gulp.task('bower:src', function() {
-
-  return gulp.src('index.html', {cwd: paths.src})
-    .pipe(wiredep({directory: 'app/bower_components', exclude: [/jquery/, /js\/bootstrap/]}))
+  return gulp.src(paths.index, {cwd: paths.src})
+    .pipe(wiredep({directory: 'app/bower_components', exclude: [/jquery/, /js\/bootstrap/, /css\/bootstrap/]}))
     .pipe(gulp.dest(paths.src));
-
 });
 gulp.task('usemin:dist', ['styles:dist'], function() {
-
-  return gulp.src('index.html', {cwd: paths.src})
+  return gulp.src(paths.index, {cwd: paths.src})
     .pipe(nginclude({assetsDirs: [paths.src]}))
     .pipe(usemin({
       js: [ngmin(), uglify(), concat.header(banner)],
-      css: [cleancss(), concat.header(banner)]
+      css: [cleancss(), concat.header(banner)],
+      libs: [through2.obj(function(file, encoding, next) {
+        file.path = file.path.replace(/(?!\.min)\.js$/, '.min.js');
+        file.contents = fs.readFileSync(file.path);
+        next(null, file);
+      }), 'concat'],
     }))
     .pipe(gulp.dest(paths.dist));
-
 });
 
 
@@ -168,10 +175,9 @@ var uglify = require('gulp-uglify');
 var ngmin = require('gulp-ngmin');
 var htmlmin = require('gulp-htmlmin');
 gulp.task('views:dist', ['usemin:dist'], function() {
-
   gulp.src(paths.views, {cwd: paths.src, base: paths.src})
     .pipe(htmlmin({removeComments: true, collapseWhitespace: true}))
-    .pipe(ngtemplate({module: '<%= props.moduleName %>'}))
+    .pipe(ngtemplate({module: 'carlipa.Selectour2014Hotel'}))
     .pipe(ngmin())
     .pipe(concat('views.tpl.js', {process: function(src) { return '// Source: ' + path.basename(this.path) + '\n' + (src.trim() + '\n').replace(/(^|\n)[ \t]*('use strict'|"use strict");?\s*/g, '$1'); }}))
     .pipe(concat.header('(function(window, document, undefined) {\n\'use strict\';\n\n'))
@@ -183,14 +189,13 @@ gulp.task('views:dist', ['usemin:dist'], function() {
     .pipe(concat.header(banner))
     .pipe(gulp.dest(path.join(paths.dist, 'scripts')));
 
-  gulp.src('index.html', {cwd: paths.dist})
+  gulp.src(paths.index, {cwd: paths.dist})
     .pipe(through2.obj(function(file, encoding, next) {
       file.contents = new Buffer(file.contents.toString().replace(/<\/body>/, '  \n<script src="scripts/views.tpl.min.js"></script>\n\n</body>'));
       next(null, file);
     }))
     .pipe(htmlmin({removeComments: true, collapseWhitespace: true}))
     .pipe(gulp.dest(paths.dist));
-
 });
 
 
@@ -240,7 +245,14 @@ gulp.task('copy:dist', function() {
 // ALIASES
 //
 gulp.task('default', ['build']);
-gulp.task('test', ['clean:test', 'jshint', 'karma:unit']);
-gulp.task('build', ['clean:dist', 'views:dist', 'copy:dist']);
-gulp.task('serve', ['clean:tmp', 'bower:src', 'styles:src', 'connect:src', 'watch:src', 'open:src']);
-gulp.task('serve-dist', ['connect:dist', 'open:dist']);
+gulp.task('dist', ['build']);
+gulp.task('test', ['clean:test'], function() {
+  return gulp.start('jshint', 'karma:unit');
+});
+gulp.task('build', ['clean:dist'], function() {
+  return gulp.start('views:dist', 'copy:dist');
+});
+gulp.task('serve', ['clean:tmp'], function() {
+  return gulp.start('bower:src', 'styles:src', 'connect:src', 'watch:src', 'open:src');
+});
+gulp.task('serve:dist', ['connect:dist', 'open:dist']);
