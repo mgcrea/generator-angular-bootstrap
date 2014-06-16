@@ -97,6 +97,13 @@ Generator.prototype.setup = function() {
       default: 0
     },
     {
+      name: 'htmlPreprocessor',
+      message: 'Should I set up one of those HTML preprocessors for you?',
+      type: 'list',
+      choices: ['none', 'jade'],
+      default: 0
+    },
+    {
       name: 'jsPreprocessor',
       message: 'Should I set up one of those JS preprocessors for you?',
       type: 'list',
