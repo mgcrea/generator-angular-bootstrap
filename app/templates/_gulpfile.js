@@ -363,7 +363,9 @@ gulp.task('karma:server', function() {
 // COPY
 //
 gulp.task('copy:dist', function() {
-  gulp.src(['favicon.ico', paths.images], {cwd: paths.src})
+  // gulp.src(['bower_components/font-awesome/fonts/*.woff'], {cwd: paths.src})
+  //   .pipe(gulp.dest(path.join(paths.dist, 'fonts')));
+  gulp.src(['favicon.ico', paths.images, paths.fonts, 'modules/**/*.tpl.html'], {cwd: paths.src, base: paths.src})
     .pipe(gulp.dest(paths.dist));
 });
 
