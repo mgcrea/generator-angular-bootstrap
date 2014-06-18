@@ -33,9 +33,10 @@ Generator.prototype.setup = function() {
     .then(function(_props) { _.extend(props, _props); }) :
     Promise.all(Object.keys(components).map(function(component) {
     var minors = {};
-    return github.tags(component, components[component]).filter(function(vObj) {
-      var vMinor = [vObj.major, vObj.minor].join('.');
-      return !minors[vMinor] && (minors[vMinor] = true);
+    return github.tags(component, components[component]).filter(function(vObj, i) {
+      return i === 0;
+      // var vMinor = [vObj.major, vObj.minor].join('.');
+      // return !minors[vMinor] && (minors[vMinor] = true);
     }).map(function(vObj) {
       return vObj.toString();
     }).then(function(tags) {
