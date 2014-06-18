@@ -154,7 +154,6 @@ gulp.task('styles:dist', function() {
 <% if (props.htmlPreprocessor === 'jade') { %>var jade = require('gulp-jade');
 var wiredep = require('wiredep').stream;
 var through2 = require('through2');
-var merge = require('merge-stream');
 var usemin = require('gulp-usemin');
 gulp.task('views:src', function() {
 
