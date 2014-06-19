@@ -6,7 +6,7 @@ html(class="no-js", ng-app="<%= props.user ? props.user + '.' : '' %><%= props.t
   title <%= props.title %> - <%= props.description %>
   meta(name="description", content="<%= props.description %>")
 
-<% if(props.supportLegacy) { %>  <!--[if lt IE 9]>
+<% if(props.supportLegacy === 'yes') { %>  <!--[if lt IE 9]>
   script(src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/2.2.0/es5-shim.min.js")
   script(src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js")
   <![endif]-->
