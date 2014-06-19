@@ -136,7 +136,7 @@ Generator.prototype.setup = function() {
     },
     {
       name: 'license',
-      message: 'Under which lincense your project shall be released?',
+      message: 'Under which license your project shall be released?',
       default: 'MIT'
     },
     {
