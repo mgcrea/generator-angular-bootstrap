@@ -196,8 +196,10 @@ Generator.prototype.setup = function() {
   })
   .then(function setupAppFiles() {
 
+    var htmlExt = props.htmlPreprocessor === 'jade' ? 'jade' : 'html';
+
     self.mkdir('app');
-    self.template('app/_index.html', 'app/index.html');
+    self.template('app/_index.' + htmlExt, 'app/index.' + htmlExt);
 
     // Scripts
     self.mkdir('app/scripts');
@@ -221,12 +223,12 @@ Generator.prototype.setup = function() {
 
     // Views
     self.mkdir('app/views');
-    self.copy('app/views/contact.html', 'app/views/contact.html');
-    self.copy('app/views/features.html', 'app/views/features.html');
-    self.copy('app/views/home.html', 'app/views/home.html');
+    self.copy('app/views/contact.' + htmlExt, 'app/views/contact.' + htmlExt);
+    self.copy('app/views/features.' + htmlExt, 'app/views/features.' + htmlExt);
+    self.copy('app/views/home.' + htmlExt, 'app/views/home.' + htmlExt);
     self.mkdir('app/views/partials');
-    self.copy('app/views/partials/header.html', 'app/views/partials/header.html');
-    self.copy('app/views/partials/footer.html', 'app/views/partials/footer.html');
+    self.copy('app/views/partials/header.' + htmlExt, 'app/views/partials/header.' + htmlExt);
+    self.copy('app/views/partials/footer.' + htmlExt, 'app/views/partials/footer.' + htmlExt);
 
   })
   .then(function() {

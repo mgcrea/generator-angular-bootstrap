@@ -1,0 +1,55 @@
+doctype html
+html(class="no-js", ng-app="mgcrea.Angularjs20140623")
+  head
+  meta(charset="utf-8")
+  meta(http-equiv="X-UA-Compatible", content="IE=edge,chrome=1")
+  title <%= props.title %> - <%= props.description %>
+  meta(name="description", content="<%= props.description %>")
+
+<% if(props.supportLegacy) { %><!--[if lt IE 9]>
+  script(src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/2.2.0/es5-shim.min.js")
+  script(src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js")
+<![endif]--><% } %>
+
+  //- Sets initial viewport load and disables zooming
+  meta(name="viewport", content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no")
+  //- Makes your prototype chrome-less once bookmarked to your phone's home screen
+  meta(name="apple-mobile-web-app-capable", content="yes")
+  meta(name="apple-mobile-web-app-status-bar-style", content="black-translucent")
+  //- Set a shorter title for iOS6 devices when saved to home screen
+  meta(name="apple-mobile-web-app-title" content="AngularJS")
+
+  //- Favicon
+  link(rel="icon", href="http://angularjs.org/favicon.ico", type="image/x-icon")
+  link(rel="shortcut icon", href="http://angularjs.org/favicon.ico", type="image/x-icon")
+  //- Author of this application
+<% if(props.github) { %>  link(rel="author" href="<%= props.github.html_url %>") <% } %>
+
+  // build:css styles/components.min.css
+  // bower:css
+  // endbower
+  // endbuild
+
+  // build:css(.tmp/admin/app) styles/main.min.css
+  link(rel="stylesheet", href="styles/main.css")
+  // endbuild
+
+  body
+    .site-wrapper
+      .site-wrapper-inner
+        .masthead.clearfix
+          .inner(ng-include="'views/partials/header.html'")
+        .inner.cover
+          .inner(ng-view)
+        .mastfoot
+          .inner(ng-include="'views/partials/footer.html'")
+
+    // build:libs scripts/components.min.js
+    // bower:js
+    // endbower
+    // endbuild
+
+    // build:js scripts/main.min.js
+    script(src="scripts/app.js")
+    script(src="scripts/controllers/main.js")
+    // endbuild
