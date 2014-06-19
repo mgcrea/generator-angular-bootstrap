@@ -15,8 +15,9 @@ var paths = {
   dist: 'dist',
   tmp: '.tmp',
   scripts: 'scripts/**/*.js',
-  index: 'index.html',
-  views: 'views/**/*.html',
+<% if (props.htmlPreprocessor === 'jade') { %>  index: 'index.jade',
+  views: 'views/**/*.jade',<% } else { %>  index: 'index.html',
+  views: 'views/**/*.html',<% } %>
   images: 'images/{,*/}*.{jpg,png,svg}',
   styles: 'styles/{,*/}*.less',
   fonts: 'fonts/{,*/}*.woff',
