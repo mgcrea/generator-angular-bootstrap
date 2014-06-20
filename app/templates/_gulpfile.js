@@ -81,14 +81,9 @@ gulp.task('open:dist', function(){
 //
 var watch = require('gulp-watch');
 gulp.task('watch:src', function() {
-  gulp.src(paths.scripts, {cwd: paths.src})
-    .pipe(watch(function(files) {
-      return files.pipe(connect.reload());
-    }));
-  gulp.src(paths.styles, {cwd: paths.src})
-    .pipe(watch({}, ['styles:src']));
-  gulp.src([paths.index, paths.views], {cwd: paths.src})
-    .pipe(watch({}, ['views:src']));
+  watch({glob: path.join(paths.src, paths.scripts)}).pipe(connect.reload());
+  watch({glob: path.join(paths.src, paths.styles)}, ['styles:src']);
+  watch({glob: [path.join(paths.src, paths.index), path.join(paths.src, paths.views)]}, ['views:src']);
 });
 
 
