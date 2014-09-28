@@ -1,52 +1,56 @@
 'use strict';
+// @cli $ nodemon -w ~/DropboxBackup/Developer/yeoman/generator-gular-bootstrap -x yo angular-bootstrap
 
 // Required modules
 //
-var util = require('util'), utils = require('./utils');
+var util = require('util'), utils = require('./modules/utils');
 var path = require('path');
 var Promise = require('bluebird');
-var needle = Promise.promisifyAll(require('needle'));
 var semver = require('semver');
-var github = require('./github');
+var github = require('./modules/github');
 var debug = false;
 
-var Generator = module.exports = require('./generator');
+var Generator = module.exports = require('./modules/generator');
 
 Generator.prototype.setup = function() {
+
   var self = this, _ = this._, props = this.props, done = this.async();
 
   // Have Yeoman greet the user.
   console.log(self.yeoman);
 
   var components = self.components = {
-    'angular/angular.js': '^1.0.0',
-    'twbs/bootstrap': '^3.1.0',
-    'fortawesome/font-awesome': '^4.0.0',
-    'mgcrea/angular-strap': '^2.0.0',
-    'mgcrea/angular-motion': '^0.3.0',
-    'mgcrea/bootstrap-additions': '^0.2.0',
-    'angular-ui/ui-router': '^0.2.0'
+    'angular/angular.js': ['~1.3.0', '~1.2.0'],
+    'twbs/bootstrap': ['^3.0'],
+    'fortawesome/font-awesome': ['^4.0'],
+    'mgcrea/angular-strap': ['^2.0'],
+    'mgcrea/angular-motion': ['^0.3'],
+    'mgcrea/bootstrap-additions': ['^0.2'],
+    'angular-ui/ui-router': ['^0.2']
   };
 
   var promise = debug ?
-    Promise.resolve(JSON.parse('{"ngVersion":"v1.3.0-beta.7","ngModules":["animate","route"],"components":["twbs/bootstrap","mgcrea/angular-strap","mgcrea/angular-motion","mgcrea/bootstrap-additions"],"buildSystem":"gulp","jsPreprocessor":"none","cssPreprocessor":"less","supportLegacy":"no","name":"test-generator-angular-bootstrap","license":"MIT","user":"mgcrea"}'))
+    Promise.resolve(JSON.parse('{"ngVersion":"~1.3.0","ngModules":["animate","route"],"components":["twbs/bootstrap","fortawesome/font-awesome","mgcrea/angular-strap","mgcrea/angular-motion","mgcrea/bootstrap-additions"],"buildSystem":"gulp","htmlPreprocessor":"jade","jsPreprocessor":"none","cssPreprocessor":"less","supportLegacy":"no","name":"admin","license":"MIT","user":"mgcrea"}'))
     .then(function(_props) { _.extend(props, _props); }) :
-    Promise.all(Object.keys(components).map(function(component) {
-    var minors = {};
-    return github.tags(component, components[component]).filter(function(vObj, i) {
-      return i === 0;
-      // var vMinor = [vObj.major, vObj.minor].join('.');
-      // return !minors[vMinor] && (minors[vMinor] = true);
-    }).map(function(vObj) {
-      return vObj.toString();
-    }).then(function(tags) {
-      components[component] = tags;
-      return tags;
-    });
-  })).catch(function(err) {
-    console.log('/!\\ Tag fetching failed, fallback to last known defaults.');
-    components = JSON.parse('{"angular/angular.js":["v1.3.0-beta.7","v1.2.16","v1.1.5"],"twbs/bootstrap":["v3.1.1"],"fortawesome/font-awesome":["v4.0.3"],"mgcrea/angular-strap":["v2.0.2"],"mgcrea/angular-motion":["v0.3.2"],"mgcrea/bootstrap-additions":["v0.2.2"],"angular-ui/ui-router":["0.2.10"]}');
-  })
+  //   Promise.all(Object.keys(components).map(function(component) {
+  //   var minors = {};
+  //   return github.tags(component, components[component]).filter(function(vObj, i) {
+  //     // return i === 0;
+  //     d(vObj);
+  //     var vMinor = [vObj.major, vObj.minor].join('.');
+  //     return !minors[vMinor] && (minors[vMinor] = true);
+  //   }).map(function(vObj) {
+  //     return vObj.toString();
+  //   }).then(function(tags) {
+  //     components[component] = tags;
+  //     return tags;
+  //   });
+  // })).catch(function(err) {
+  //   d(err);
+  //   console.log('/!\\ Tag fetching failed, fallback to last known defaults.');
+  //   components = JSON.parse('{"angular/angular.js":["^1.3.0","^1.2.0"],"twbs/bootstrap":["^3.0"],"fortawesome/font-awesome":["v4.0.3"],"mgcrea/angular-strap":["v2.0.2"],"mgcrea/angular-motion":["v0.3.2"],"mgcrea/bootstrap-additions":["v0.2.2"],"angular-ui/ui-router":["0.2.10"]}');
+  // })
+  Promise.resolve()
   .then(function askForAngular() {
     return self.promptAsync([{
       name: 'ngVersion',
@@ -90,13 +94,14 @@ Generator.prototype.setup = function() {
   })
   .then(function askForBuildSettings() {
 
-    return self.promptAsync([{
-      name: 'buildSystem',
-      message: 'What build system would I use?',
-      type: 'list',
-      choices: ['gulp', 'grunt'],
-      default: 0
-    },
+    return self.promptAsync([
+    // {
+    //   name: 'buildSystem',
+    //   message: 'What build system would I use?',
+    //   type: 'list',
+    //   choices: ['gulp', 'grunt'],
+    //   default: 0
+    // },
     {
       name: 'htmlPreprocessor',
       message: 'Should I set up one of those HTML preprocessors for you?',
@@ -148,6 +153,7 @@ Generator.prototype.setup = function() {
   });
 
   return promise.then(function() {
+    console.log(JSON.stringify(props));
 
     props.dashName = _.dasherize(props.name);
     if(!props.locale) props.locale = 'en';
@@ -169,7 +175,9 @@ Generator.prototype.setup = function() {
     }
 
     if(!props.user) return;
-    return github.user(props.user).then(function(user) {
+    return debug ? Promise.resolve(props.github = JSON.parse('{"login":"mgcrea","id":108273,"avatar_url":"https://avatars.githubusercontent.com/u/108273?v=2","gravatar_id":"","url":"https://api.github.com/users/mgcrea","html_url":"https://github.com/mgcrea","followers_url":"https://api.github.com/users/mgcrea/followers","following_url":"https://api.github.com/users/mgcrea/following{/other_user}","gists_url":"https://api.github.com/users/mgcrea/gists{/gist_id}","starred_url":"https://api.github.com/users/mgcrea/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/mgcrea/subscriptions","organizations_url":"https://api.github.com/users/mgcrea/orgs","repos_url":"https://api.github.com/users/mgcrea/repos","events_url":"https://api.github.com/users/mgcrea/events{/privacy}","received_events_url":"https://api.github.com/users/mgcrea/received_events","type":"User","site_admin":false,"name":"Olivier Louvignes","company":"Freelance","blog":"http://olouv.com","location":"Paris, France","email":"olivier@mg-crea.com","hireable":true,"bio":null,"public_repos":104,"public_gists":13,"followers":339,"following":78,"created_at":"2009-07-24T09:50:40Z","updated_at":"2014-09-26T16:59:20Z"}')) :
+    github.user(props.user).then(function(user) {
+      console.log(JSON.stringify(user));
       props.github = user;
     }).catch(function(err) {
       console.log('/!\\ User fetching failed.');
@@ -186,8 +194,7 @@ Generator.prototype.setup = function() {
     self.copy('bowerrc', '.bowerrc');
 
     // Package
-    if(props.buildSystem === 'grunt') self.template('_Gruntfile.js', 'Gruntfile.js');
-    if(props.buildSystem === 'gulp') self.template('_gulpfile.js', 'gulpfile.js');
+    self.template('_gulpfile.js', 'gulpfile.js');
     self.template('_package.json', 'package.json');
     self.template('_bower.json', 'bower.json');
     self.template('_README.md', 'README.md');

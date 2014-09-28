@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('<%= props.moduleName %>')
+angular.module('{{ props.moduleName }}');

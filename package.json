@@ -22,11 +22,12 @@
     "test": "mocha"
   },
   "dependencies": {
-    "bluebird": "^2.3.0",
+    "bluebird": "^2.3.4",
     "chalk": "^0.5.1",
-    "needle": "^0.7.8",
-    "semver": "^3.0.1",
-    "yeoman-generator": "^0.17.2"
+    "needle": "^0.7.10",
+    "nunjucks": "^1.0.7",
+    "semver": "^4.0.0",
+    "yeoman-generator": "^0.17.6"
   },
   "devDependencies": {
     "chalk": "^0.5.1",

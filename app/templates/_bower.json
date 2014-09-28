@@ -1,29 +1,37 @@
 {
-  "name": "<%= props.name %>",
-  "version": "<%= props.version %>",
-  "description": "<%= props.description %>",
+  "name": "{{ props.name }}",
+  "version": "{{ props.version }}",
+  "description": "{{ props.description }}",
   "keywords": [
     "angular"
   ],
-<% if(props.github) { %>  "homepage": "<%= props.github.html_url %>/<%= props.dashName %>",
-  "bugs": "<%= props.github.html_url %>/<%= props.dashName %>/issues",
+{%- if props.github %}
+  "homepage": "{{ props.github.html_url }}/{{ props.dashName }}",
+  "bugs": "{{ props.github.html_url }}/{{ props.dashName }}/issues",
   "author": {
-    "name": "<%= props.github.name %>",
-    "email": "<%= props.github.email %>",
-    "url": "<%= props.github.html_url %>"
+    "name": "{{ props.github.name }}",
+    "email": "{{ props.github.email }}",
+    "url": "{{ props.github.html_url }}"
   },
   "repository": {
     "type": "git",
-    "url": "<%= props.github.html_url %>/<%= props.dashName %>.git"
-  },<% } %>
-<% if (props.license) { %>  "licenses": [
+    "url": "{{ props.github.html_url }}/{{ props.dashName }}.git"
+  },
+{%- endif %}
+{%- if props.license %}
+   "licenses": [
     {
-      "type": "<%= props.license %>"
+      "type": "{{ props.license }}"
     }
-  ],<% } %>
-  "dependencies": {<% props.components.forEach(function(component) { %>
-    "<%= component.split('/')[1] %>": "<%= components[component] %>",<% }); %><% props.ngModules.forEach(function(module) { %>
-    "angular-<%= module %>": "^<%= props.ngVersion %>",<% }); %>
-    "angular": "^<%= props.ngVersion %>"
+  ],
+{%- endif %}
+  "dependencies": {
+    {%- for component in props.components %}
+    "{{ component|split("/")|last }}": "{{ components[component] }}",
+    {%- endfor %}
+    {%- for module in props.ngModules %}
+    "angular-{{ module }}": "{{ props.ngVersion }}",
+    {%- endfor %}
+    "angular": "{{ props.ngVersion }}"
   }
 }

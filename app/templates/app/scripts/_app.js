@@ -1,9 +1,10 @@
 'use strict';
 
-angular.module('<%= props.moduleName %>', [<%= props.appModules.length ? '\'' + props.appModules.join('\', \'') + '\'' : '' %>])
+angular.module('{{ props.moduleName }}', [{{ props.appModules|modules }}])
 
-  .constant('version', 'v<%= props.version %>')
-<% if(props.ngModules.indexOf('route') !== -1) { %>
+  .constant('version', 'v{{ props.version }}')
+{%- if props.ngModules|contains('route') %}
+
   .config(function($locationProvider, $routeProvider) {
 
     $locationProvider.html5Mode(false);
@@ -23,10 +24,11 @@ angular.module('<%= props.moduleName %>', [<%= props.appModules.length ? '\'' + 
       });
 
   });
-<% } else { %>
+{%- else %}
+
   .config(function($locationProvider) {
 
     $locationProvider.html5Mode(false);
 
   });
-<% } %>
+{%- endif %}

@@ -1,6 +1,6 @@
-# <%= props.title %>
+# {{ props.title }}
 
-<%= props.description %>
+{{ props.description }}
 
 ## Getting Started
 

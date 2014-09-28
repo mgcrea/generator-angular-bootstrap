@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('<%= props.moduleName %>')
+angular.module('{{ props.moduleName }}')
 
   .controller('MainCtrl', function($scope, $location, version) {
 
