@@ -156,7 +156,7 @@ gulp.task('styles:dist', function() {
     .pipe(less())
     .pipe(autoprefixer('last 1 version')) // , '> 1%', 'ie 8'
     .pipe(sourcemaps.write('.'))
-    .pipe(gulp.dest(path.join(src.tmp, 'styles')));
+    .pipe(gulp.dest(src.tmp))
 });
 {% else -%}
 var prefix = require('gulp-autoprefixer');
@@ -381,9 +381,9 @@ gulp.task('karma:server', function() {
 //
 gulp.task('copy:dist', function() {
   gulp.src(['bower_components/font-awesome/fonts/*.woff'], {cwd: src.cwd})
-    .pipe(gulp.dest(path.join(src.dist, 'fonts')));
+    .pipe(gulp.dest(path.join(src.dest, 'fonts')));
   gulp.src(['favicon.ico', src.images, src.fonts, src.config, 'modules/**/*.tpl.html'], {cwd: src.cwd, base: src.cwd})
-    .pipe(gulp.dest(src.dist));
+    .pipe(gulp.dest(src.dest));
 });
 
 // ALIASES
