@@ -1,6 +1,6 @@
 {
   "name": "generator-angular-bootstrap",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "A generator for AngularJS applications",
   "keywords": [
     "angular",
