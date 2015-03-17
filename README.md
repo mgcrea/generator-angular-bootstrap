@@ -1,6 +1,8 @@
-# generator-angular-bootstrap [![Build Status](https://secure.travis-ci.org/mgcrea/generator-angular-bootstrap.png?branch=master)](https://travis-ci.org/mgcrea/generator-angular-bootstrap) (deprecated)
+# generator-angular-bootstrap [![Npm Version](https://img.shields.io/npm/v/generator-angular-bootstrap.svg?style=flat)](https://www.npmjs.com/package/generator-angular-bootstrap) [![Project Status](https://img.shields.io/badge/status-deprecated-red.svg?style=flat)](https://github.com/ng-tools/generator-ng-factory)
 
 **Note:** this module is deprecated in favor of [generator-ng-factory](https://github.com/ng-tools/generator-ng-factory). I do not plan to actively maintain this code.
+
+---
 
 A generator for [Yeoman](http://yeoman.io).
 
